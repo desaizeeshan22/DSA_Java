@@ -1,4 +1,5 @@
 package com.company.strings;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class main_string {
 //        System.out.println(Arrays.toString(int_arr));
 //        List<Integer>indices=kmp.KMP_whole("ababcababaaad","ababa");
 //        System.out.println(indices);
-        substring_distinct_characters substring=new substring_distinct_characters();
-        System.out.println(substring. most_optimum_subs("abcdeabc"));
+        substring_distinct_characters substring = new substring_distinct_characters();
+        System.out.println(substring.most_optimum_subs("abcdeabc"));
     }
 }

@@ -1,9 +1,9 @@
 package com.company.doubly_linked_list;
 
 public class main_doubly_linked_list {
-    public static void main(String[] args){
-        int []arr={10,20,30,40};
-        doubly_link_list dll=new doubly_link_list(arr);
+    public static void main(String[] args) {
+        int[] arr = {10, 20, 30, 40};
+        doubly_link_list dll = new doubly_link_list(arr);
         dll.display_dll();
 //        dll.insert_beg(5);
         System.out.println(" ");

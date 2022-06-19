@@ -1,8 +1,8 @@
 package com.company.linked_list;
 
 public class main_linked_list {
-    public static void main(String [] args){
-        link_list ll=new link_list();
+    public static void main(String[] args) {
+        link_list ll = new link_list();
         ll.insert_beg(50);
         ll.insert_beg(40);
         ll.insert_beg(30);
@@ -46,13 +46,14 @@ public class main_linked_list {
 //        System.out.println(ll.nth_node_end(2));
 
     }
-    public static void display(Node head){
-        Node curr=head;
+
+    public static void display(Node head) {
+        Node curr = head;
         System.out.print("[ ");
-        while(curr!=null){
+        while (curr != null) {
             System.out.print(curr.data);
             System.out.print(" ");
-            curr=curr.next;
+            curr = curr.next;
         }
         System.out.print("]");
     }

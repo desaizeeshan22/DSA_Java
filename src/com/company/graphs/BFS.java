@@ -21,13 +21,13 @@ public class BFS {
             Map.Entry<String, List<String>> Node = (Map.Entry) it.next();
             HashSet<String> valueSet = new HashSet<String>();
             if (Node.getValue().isEmpty()) {
-                dist=-11111;
-                result.put(dist,valueSet);
+                dist = -11111;
+                result.put(dist, valueSet);
             } else {
                 List<String> NodeList = Node.getValue();
                 for (String Value : NodeList) {
                     boolean contains = false;
-                    for (int i = 0; i <=dist; i++) {
+                    for (int i = 0; i <= dist; i++) {
                         if (result.getOrDefault(i, new HashSet<String>()).contains(Value)) {
                             contains = true;
                             break;
