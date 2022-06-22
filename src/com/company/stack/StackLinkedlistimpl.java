@@ -2,8 +2,6 @@ package com.company.stack;
 
 import com.company.linked_list.Node;
 
-import javax.imageio.metadata.IIOMetadataNode;
-
 public class StackLinkedlistimpl {
     private Node head;
     private int capacity;
