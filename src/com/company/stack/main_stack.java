@@ -22,5 +22,6 @@ public class main_stack {
         System.out.println(st.stockSpan(new int[]{100,80,60,70,60,75,85}));
         System.out.println(st.stockSpanalt(new int[]{100,80,60,70,60,75,85}));
         System.out.println(st.prevGreaterElement(new int[]{15,10,18,12,4,6,2,8}));
+        System.out.println(st.nextGreaterElement(new int[]{5,15,10,8,6,12,9,18}));
     }
 }

@@ -2,6 +2,7 @@ package com.company.stack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Stack;
 
 public class Stack_d {
@@ -112,6 +113,20 @@ public class Stack_d {
             st.push(array[i]);
             result.add(elem);
         }
+        return result;
+    }
+    public ArrayList<Integer> nextGreaterElement(int []array){
+        ArrayList<Integer>result=new ArrayList<Integer>();
+        Stack<Integer>st=new Stack<Integer>();
+        for(int i=array.length-1;i>=0;i--){
+            while(!st.isEmpty()&&st.peek()<array[i]){
+                st.pop();
+            }
+            int elem=st.isEmpty()?-1:st.peek();
+            st.push(array[i]);
+            result.add(elem);
+        }
+        Collections.reverse(result);
         return result;
     }
 }

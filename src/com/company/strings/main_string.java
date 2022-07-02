@@ -5,7 +5,7 @@ import java.util.List;
 
 public class main_string {
     public static void main(String[] args) {
-//        pattern_matching pat = new pattern_matching();
+        pattern_matching pat = new pattern_matching();
 //        String s = "geeksforgeeks";
 //        String p = "eks";
 //        pat.pattern_occurence(s, p);
@@ -19,7 +19,8 @@ public class main_string {
 //        System.out.println(Arrays.toString(int_arr));
 //        List<Integer>indices=kmp.KMP_whole("ababcababaaad","ababa");
 //        System.out.println(indices);
-        substring_distinct_characters substring = new substring_distinct_characters();
-        System.out.println(substring.most_optimum_subs("abcdeabc"));
+//        substring_distinct_characters substring = new substring_distinct_characters();
+//        System.out.println(substring.most_optimum_subs("abcdeabc"));
+          pat.pattern_print(5);
     }
 }

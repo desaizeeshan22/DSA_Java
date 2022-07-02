@@ -19,6 +19,14 @@ public class pattern_matching {
 
         }
     }
+    public void pattern_print(int n){
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i+1;j++){
+                System.out.print("@");
+            }
+            System.out.println(" ");
+        }
+    }
 
     public void distinct_char_pattern(String s, String p) {
         char[] s_arr = s.toCharArray();
