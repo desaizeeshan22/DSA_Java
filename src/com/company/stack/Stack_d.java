@@ -1,9 +1,8 @@
 package com.company.stack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Stack;
+import java.util.*;
+
+import static java.lang.Integer.max;
 
 public class Stack_d {
     private int capacity;
@@ -102,32 +101,128 @@ public class Stack_d {
         }
         return result;
     }
-    public ArrayList<Integer> prevGreaterElement(int [] array){
-        ArrayList<Integer>result=new ArrayList<Integer>();
-        Stack<Integer>st=new Stack<Integer>();
-        for(int i=0;i<array.length;i++){
-            while(!st.isEmpty()&&st.peek()<=array[i]){
+
+    public ArrayList<Integer> prevGreaterElement(int[] array) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        Stack<Integer> st = new Stack<Integer>();
+        for (int i = 0; i < array.length; i++) {
+            while (!st.isEmpty() && st.peek() <= array[i]) {
                 st.pop();
             }
-            int elem=st.isEmpty()?-1:st.peek();
+            int elem = st.isEmpty() ? -1 : st.peek();
             st.push(array[i]);
             result.add(elem);
         }
         return result;
     }
-    public ArrayList<Integer> nextGreaterElement(int []array){
-        ArrayList<Integer>result=new ArrayList<Integer>();
-        Stack<Integer>st=new Stack<Integer>();
-        for(int i=array.length-1;i>=0;i--){
-            while(!st.isEmpty()&&st.peek()<array[i]){
+
+    public ArrayList<Integer> nextGreaterElement(int[] array) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        Stack<Integer> st = new Stack<Integer>();
+        for (int i = array.length - 1; i >= 0; i--) {
+            while (!st.isEmpty() && st.peek() < array[i]) {
                 st.pop();
             }
-            int elem=st.isEmpty()?-1:st.peek();
+            int elem = st.isEmpty() ? -1 : st.peek();
             st.push(array[i]);
             result.add(elem);
         }
         Collections.reverse(result);
         return result;
+    }
+
+    public int maxAreaNaive(int[] array) {
+        int res = Integer.MIN_VALUE;
+        for (int i = 0; i < array.length; i++) {
+            int curr = array[i];
+            for (int j = i - 1; j >= 0; j--) {
+                if (array[j] >= array[i]) {
+                    curr += array[i];
+                } else {
+                    break;
+                }
+            }
+            for (int k = i + 1; k < array.length; k++) {
+                if (array[k] >= array[i]) {
+                    curr += array[i];
+                } else {
+                    break;
+                }
+            }
+            res = max(res, curr);
+        }
+
+        return res;
+    }
+    public int maxAreaEff(int []array){
+        Stack<Integer>st=new Stack<Integer>();
+        st.push(-1);
+        int maxArea=0;
+        for(int i=0;i<array.length;i++){
+            while(st.peek()!=-1&&array[st.peek()]>=array[i]){
+                int currHeight=array[st.pop()];
+                maxArea=Math.max(maxArea,currHeight*(i-st.peek()-1));
+            }
+            st.push(i);
+        }
+        while(st.peek()!=-1){
+            int currHeight=array[st.pop()];
+            maxArea=Math.max(maxArea,array.length-st.peek()-1);
+        }
+        return maxArea;
+    }
+    public String infixToPostfix(String infix){
+        String res="";
+        Stack<Character>st=new Stack<Character>();
+        Map<Character,Integer> map=new HashMap<Character,Integer>();
+        String operators="^*/+-";
+        for(int i=0;i<operators.length();i++){
+            if(operators.charAt(i)=='^'){
+                map.put(operators.charAt(i),3);
+            }
+            if(operators.charAt(i)=='*'||operators.charAt(i)=='/'){
+                map.put(operators.charAt(i),2);
+            }
+            if(operators.charAt(i)=='+'||operators.charAt(i)=='-'){
+                map.put(operators.charAt(i),1);
+            }
+        }
+        for(int i=0;i<infix.length();i++){
+            if(infix.charAt(i)=='('){
+                st.push(infix.charAt(i));
+            }
+            else if(infix.charAt(i)==')'){
+                while(!st.isEmpty()&&st.peek()!='('){
+                    res+=st.pop();
+                }
+                if(!st.isEmpty()&&st.peek()==')') {
+                    st.pop();
+                }
+            }
+            else if(!map.containsKey(infix.charAt(i))){
+                res+=infix.charAt(i);
+            }
+            else{
+                if((st.isEmpty())||st.peek()=='('||(map.get(infix.charAt(i))>map.get(st.peek()))){
+                    st.push(infix.charAt(i));
+                }
+                else if(map.get(infix.charAt(i))<=map.get(st.peek())){
+                    while(!st.isEmpty()&&st.peek()!='('&&map.get(infix.charAt(i))<=map.get(st.peek())){
+                        res+=st.pop();
+                    }
+                    st.push(infix.charAt(i));
+                }
+                }
+            }
+        while(!st.isEmpty()){
+            if(st.peek()=='('||st.peek()==')'){
+                st.pop();
+            }
+            else {
+                res += st.pop();
+            }
+        }
+        return res;
     }
 }
 
