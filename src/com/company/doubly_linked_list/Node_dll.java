@@ -1,17 +1,17 @@
 package com.company.doubly_linked_list;
 
 public class Node_dll {
-    int data;
-    Node_dll prev;
-    Node_dll next;
+    public int data;
+    public Node_dll prev;
+    public Node_dll next;
 
-    Node_dll() {
+    public Node_dll() {
         data = 0;
         prev = null;
         next = null;
     }
 
-    Node_dll(int data) {
+    public Node_dll(int data) {
         this.data = data;
         prev = null;
         next = null;
