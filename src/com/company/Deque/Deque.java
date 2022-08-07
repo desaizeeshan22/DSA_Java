@@ -51,7 +51,7 @@ public class Deque {
             System.out.println("Deque is empty");
             return;
         }
-        rear = (front - size + 1) % capacity;
+        rear = (front + size - 1) % capacity;
         rear = (rear + 1) % capacity;
         this.array[rear] = num;
         size += 1;
@@ -62,7 +62,7 @@ public class Deque {
             System.out.println("deque is empty");
             return MIN_VALUE;
         }
-        rear = (front - size + 1) % capacity;
+        rear = (front + size - 1) % capacity;
         int temp = this.array[rear];
         rear = (rear - 1 + capacity) % capacity;
         size -= 1;
