@@ -10,9 +10,11 @@ public class main_tree {
         root.lchild.lchild = new Node_BT(5);
         root.lchild.rchild = new Node_BT(25);
         root.rchild.rchild = new Node_BT(35);
-        InorderTraversal(root);
-        System.out.println(" ");
-        iterativeInorderTraversal(root);
+//        InorderTraversal(root);
+//        System.out.println(" ");
+//        iterativeInorderTraversal(root);
+//        System.out.println(" ");
+        PreorderTraversal(root);
     }
 
     public static void InorderTraversal(Node_BT root) {
@@ -33,9 +35,19 @@ public class main_tree {
                 curr = curr.lchild;
             } else {
                 curr = st.pop();
-                System.out.print(curr.data +" ");
-                curr=curr.rchild;
+                System.out.print(curr.data + " ");
+                curr = curr.rchild;
             }
         }
+    }
+
+    public static void PreorderTraversal(Node_BT root) {
+        if(root == null){
+            return  ;
+        }
+        System.out.print(root.data);
+        System.out.print(" ");
+        PreorderTraversal(root.lchild);
+        PreorderTraversal(root.rchild);
     }
 }
