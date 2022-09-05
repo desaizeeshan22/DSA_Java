@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
+
 public class main_tree {
     public static void main(String[] args) {
         Node_BT root = new Node_BT(10);
@@ -24,7 +25,9 @@ public class main_tree {
 //        PostorderTraversal(root);
 //        ArrayList<Integer> result = iterativePostorderTraversal(root);
 //        System.out.println(result);
-        System.out.println(iterativePreorderTraversal(root));
+//        System.out.println(iterativePreorderTraversal(root));
+        System.out.println(heightTree(root));
+        System.out.println(iterativeHeight(root));
     }
 
     public static void InorderTraversal(Node_BT root) {
@@ -120,6 +123,43 @@ public class main_tree {
             }
         }
         return result;
+    }
+
+    public static int heightTree(Node_BT root) {
+        if (root == null||(root.lchild == null && root.rchild == null)) {
+            return 0;
+        }
+        return Integer.max(heightTree(root.lchild), heightTree(root.rchild)) + 1;
+    }
+
+    public static int iterativeHeight(Node_BT root) {
+        int maxHeight = 0;
+        int height = 0;
+        Stack<Node_BT>st=new Stack<>();
+        Node_BT curr=root;
+        while(!st.isEmpty()||curr != null){
+            maxHeight=Math.max(height,maxHeight);
+            if (curr!=null){
+                st.push(curr);
+                height+=1;
+                curr=curr.lchild;
+            }
+            else{
+                Node_BT temp=st.peek().rchild;
+                if(temp==null){
+                    temp=st.pop();
+                    height-=1;
+                    while(!st.isEmpty()&&st.peek().rchild==temp){
+                        temp=st.pop();
+                        height-=1;
+                    }
+                }
+                else{
+                    curr=temp;
+                }
+            }
+        }
+        return maxHeight-1;
     }
 
 }
