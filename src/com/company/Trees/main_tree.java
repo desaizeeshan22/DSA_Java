@@ -10,13 +10,13 @@ import java.util.Stack;
 
 public class main_tree {
     public static void main(String[] args) {
-        Node_BT root = new Node_BT(10);
-        root.lchild = new Node_BT(20);
-        root.rchild = new Node_BT(30);
-        root.lchild.lchild = new Node_BT(5);
-        root.lchild.rchild = new Node_BT(25);
-        root.rchild.rchild = new Node_BT(35);
-        root.rchild.lchild = new Node_BT(8);
+//        Node_BT root = new Node_BT(10);
+//        root.lchild = new Node_BT(20);
+//        root.rchild = new Node_BT(30);
+//        root.lchild.lchild = new Node_BT(5);
+//        root.lchild.rchild = new Node_BT(25);
+//        root.rchild.rchild = new Node_BT(35);
+//        root.rchild.lchild = new Node_BT(8);
 //        InorderTraversal(root);
 //        System.out.println(" ");
 //        iterativeInorderTraversal(root);
@@ -26,8 +26,12 @@ public class main_tree {
 //        ArrayList<Integer> result = iterativePostorderTraversal(root);
 //        System.out.println(result);
 //        System.out.println(iterativePreorderTraversal(root));
-        System.out.println(heightTree(root));
-        System.out.println(iterativeHeight(root));
+//        System.out.println(heightTree(root));
+//        System.out.println(iterativeHeight(root));
+        Tree tree = new Tree();
+        tree.createTree();
+        tree.inOrderTraversal(tree.getRoot());
+        tree.preOrderTraversal(tree.getRoot());
     }
 
     public static void InorderTraversal(Node_BT root) {
@@ -126,7 +130,7 @@ public class main_tree {
     }
 
     public static int heightTree(Node_BT root) {
-        if (root == null||(root.lchild == null && root.rchild == null)) {
+        if (root == null || (root.lchild == null && root.rchild == null)) {
             return 0;
         }
         return Integer.max(heightTree(root.lchild), heightTree(root.rchild)) + 1;
@@ -135,31 +139,29 @@ public class main_tree {
     public static int iterativeHeight(Node_BT root) {
         int maxHeight = 0;
         int height = 0;
-        Stack<Node_BT>st=new Stack<>();
-        Node_BT curr=root;
-        while(!st.isEmpty()||curr != null){
-            maxHeight=Math.max(height,maxHeight);
-            if (curr!=null){
+        Stack<Node_BT> st = new Stack<>();
+        Node_BT curr = root;
+        while (!st.isEmpty() || curr != null) {
+            maxHeight = Math.max(height, maxHeight);
+            if (curr != null) {
                 st.push(curr);
-                height+=1;
-                curr=curr.lchild;
-            }
-            else{
-                Node_BT temp=st.peek().rchild;
-                if(temp==null){
-                    temp=st.pop();
-                    height-=1;
-                    while(!st.isEmpty()&&st.peek().rchild==temp){
-                        temp=st.pop();
-                        height-=1;
+                height += 1;
+                curr = curr.lchild;
+            } else {
+                Node_BT temp = st.peek().rchild;
+                if (temp == null) {
+                    temp = st.pop();
+                    height -= 1;
+                    while (!st.isEmpty() && st.peek().rchild == temp) {
+                        temp = st.pop();
+                        height -= 1;
                     }
-                }
-                else{
-                    curr=temp;
+                } else {
+                    curr = temp;
                 }
             }
         }
-        return maxHeight-1;
+        return maxHeight - 1;
     }
 
 }
