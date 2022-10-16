@@ -2,10 +2,7 @@ package com.company.Trees;
 
 import com.company.linked_list.Node;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 
 public class main_tree {
@@ -28,10 +25,21 @@ public class main_tree {
 //        System.out.println(iterativePreorderTraversal(root));
 //        System.out.println(heightTree(root));
 //        System.out.println(iterativeHeight(root));
-        Tree tree = new Tree();
-        tree.createTree();
-        tree.inOrderTraversal(tree.getRoot());
-        tree.preOrderTraversal(tree.getRoot());
+//        Tree tree = new Tree();
+//        tree.createTree();
+//        tree.inOrderTraversal(tree.getRoot());
+//        tree.preOrderTraversal(tree.getRoot());
+        BinarySearchTree tree = new BinarySearchTree();
+        List<Integer> list = new ArrayList<Integer>(Arrays.asList(20, 40, 15, 25, 35, 50));
+        tree.root = tree.recursiveInsert(tree.root, 30);
+        for (int elem : list) {
+            tree.recursiveInsert(tree.root, elem);
+        }
+        System.out.println(tree.SortedElements());
+        System.out.println(tree.DeleteNode(tree.root,35));
+        System.out.println(tree.SortedElements());
+//        System.out.println(tree.iterativeHeight());
+//        System.out.println(tree.height(tree.root));
     }
 
     public static void InorderTraversal(Node_BT root) {
@@ -115,15 +123,8 @@ public class main_tree {
                 result.add(curr.data);
                 curr = curr.lchild;
             } else {
-                Node_BT temp = st.peek().rchild;
-                if (temp == null) {
-                    temp = st.pop();
-                    while (!st.isEmpty() && st.peek().rchild == temp) {
-                        temp = st.pop();
-                    }
-                } else {
-                    curr = temp;
-                }
+                curr = st.pop();
+                curr = curr.rchild;
             }
         }
         return result;
