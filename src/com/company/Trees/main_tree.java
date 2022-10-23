@@ -29,17 +29,23 @@ public class main_tree {
 //        tree.createTree();
 //        tree.inOrderTraversal(tree.getRoot());
 //        tree.preOrderTraversal(tree.getRoot());
-        BinarySearchTree tree = new BinarySearchTree();
-        List<Integer> list = new ArrayList<Integer>(Arrays.asList(20, 40, 15, 25, 35, 50));
-        tree.root = tree.recursiveInsert(tree.root, 30);
-        for (int elem : list) {
-            tree.recursiveInsert(tree.root, elem);
-        }
-        System.out.println(tree.SortedElements());
-        System.out.println(tree.DeleteNode(tree.root,35));
-        System.out.println(tree.SortedElements());
+//        BinarySearchTree tree = new BinarySearchTree();
+//        List<Integer> list = new ArrayList<Integer>(Arrays.asList(20, 40, 15, 25, 35, 50));
+//        tree.root = tree.recursiveInsert(tree.root, 30);
+//        for (int elem : list) {
+//            tree.recursiveInsert(tree.root, elem);
+//        }
+//        System.out.println(tree.SortedElements());
+//        System.out.println(tree.DeleteNode(tree.root,35));
+//        System.out.println(tree.SortedElements());
 //        System.out.println(tree.iterativeHeight());
 //        System.out.println(tree.height(tree.root));
+
+        AVLTree avLTree=new AVLTree();
+        avLTree.root= avLTree.Rinsert(avLTree.root,10);
+        avLTree.Rinsert(avLTree.root,5);
+        avLTree.Rinsert(avLTree.root,2);
+        System.out.println(avLTree.root);
     }
 
     public static void InorderTraversal(Node_BT root) {

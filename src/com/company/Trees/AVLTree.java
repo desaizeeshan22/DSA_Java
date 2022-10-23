@@ -1,22 +1,20 @@
 package com.company.Trees;
 
 public class AVLTree {
-    private Node_AVL root;
-
+    public Node_AVL root;
+    public AVLTree(){
+        root=null;
+    }
     public Node_AVL Rinsert(Node_AVL node, int data) {
         if (node == null) {
-            node = new Node_AVL(data);
-            node.height = height(node);
-            return node;
+            Node_AVL temp = new Node_AVL(data);
+            temp.height = 1;
+            return temp;
         }
-        Node_AVL temp = node;
-        if (data < temp.data) {
-            temp.lchild = Rinsert(temp.lchild, data);
-        } else if (data > temp.data) {
-            temp.rchild = Rinsert(temp.rchild, data);
-        } else {
-            System.out.println(String.format("Node with data %d ", data));
-            return null;
+        if (data < node.data) {
+            node.lchild = Rinsert(node.lchild, data);
+        } else if (data > node.data) {
+            node.rchild = Rinsert(node.rchild, data);
         }
         node.height = height(node);
         if (balanceFactor(node) == 2 && balanceFactor(node.lchild) == 1) {
