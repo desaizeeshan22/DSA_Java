@@ -37,7 +37,7 @@ public class AVLTree {
         nodeLchild.rchild = node;
         node.lchild = nodeLRchild;
         node.height = height(node);
-        node.lchild.height = height(node);
+        nodeLchild.height = height(nodeLchild);
         if (root == node) {
             root = nodeLchild;
         }
@@ -49,6 +49,8 @@ public class AVLTree {
         Node_AVL nodeRLchild = node.rchild.lchild;
         nodeRchild.lchild = node;
         node.rchild = nodeRLchild;
+        node.height=height(node);
+        nodeRchild.height = height(nodeRchild);
         if (root == node) {
             root = nodeRchild;
         }
@@ -62,6 +64,9 @@ public class AVLTree {
         node.lchild = nodeLRchild.rchild;
         nodeLRchild.lchild = nodeLchild;
         nodeLRchild.rchild = node;
+        node.height=height(node);
+        nodeLchild.height=height(nodeLchild);
+        nodeLRchild.height=height(nodeLRchild);
         if (root == node) {
             root = nodeLRchild;
         }
@@ -75,6 +80,9 @@ public class AVLTree {
         node.rchild = nodeRLchild.lchild;
         nodeRLchild.lchild = node;
         nodeRLchild.rchild = nodeRchild;
+        node.height=height(node);
+        nodeRchild.height=height(nodeRchild);
+        nodeRLchild.height=height(nodeRLchild);
         if (root == node) {
             root = nodeRLchild;
         }
