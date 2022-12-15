@@ -158,4 +158,43 @@ public class MainGraphs {
         }
         return false;
     }
+
+//    Topological sort using Kahn's algorithm(BFS based)
+//    Calculate the indegrees of every vertex (every vertex is like a job)
+//    an indegree indicates number of jobs which need to be complete before arriving to the particular job(vertex)
+//    jobs with indegree 0 are run first aka not dependent on other jobs
+//    store 0 indegree jobs in the queue use BFS to go to the dependent jobs aka all neighbours and reduce indegree by 1
+//    if indegree becomes 0 then push the job(vertex) to the queue to be processed as all its dependent jobs are complete
+//    pop the job from the queue and repeat the process on all the neighbouring jobs(vertices) of the popped job
+
+    public static List<Integer> BFS_Topological_Sort(Map<Integer, List<Integer>> adjList) {
+        List<Integer> indegree = Arrays.asList(new Integer[adjList.size()]);
+        Collections.fill(indegree, 0);
+        for (Integer node : adjList.keySet()) {
+            adjList.entrySet().forEach(elem -> {
+                        if (elem.getValue().contains(node)) {
+                            indegree.set(node, indegree.get(node) + 1);
+                        }
+                    }
+            );
+        }
+        Queue<Integer> q = new LinkedList();
+        indegree.forEach(elem -> {
+            if (elem.equals(0)) {
+                q.add(indegree.indexOf(elem));
+            }
+        });
+        List<Integer> result = new ArrayList();
+        while (!q.isEmpty()) {
+            Integer node = q.poll();
+            result.add(node);
+            for (Integer neighbor : adjList.get(node)) {
+                indegree.set(node, indegree.get(node) - 1);
+                if (indegree.get(node).equals(0)) {
+                    q.add(node);
+                }
+            }
+        }
+        return result;
+    }
 }
