@@ -2,6 +2,7 @@ package com.company.graphs;
 
 import java.util.*;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Integer.MAX_VALUE;
 
 public class MainGraphs {
@@ -43,14 +44,20 @@ public class MainGraphs {
 //        adjList.put(4, List.of(2, 5));
 //        adjList.put(5, List.of(4));
 //        System.out.println(CycleUndirectedGraph(adjList));
-        adjList.put(0, List.of(1));
-        adjList.put(1, new ArrayList<Integer>());
-        adjList.put(2, List.of(1, 3));
-        adjList.put(3, List.of(4));
-        adjList.put(4, List.of(5));
-        adjList.put(5, List.of(3));
+//        adjList.put(0, List.of(1));
+//        adjList.put(1, new ArrayList<Integer>());
+//        adjList.put(2, List.of(1, 3));
+//        adjList.put(3, List.of(4));
+//        adjList.put(4, List.of(5));
+//        adjList.put(5, List.of(3));
 //        System.out.println(DFSCycleDirectedGraph(adjList));
-        System.out.println(BFSCycleDirectedGraph(adjList));
+//        System.out.println(BFSCycleDirectedGraph(adjList));
+        adjList.put(0, List.of(1));
+        adjList.put(1, List.of(3));
+        adjList.put(3, List.of(4));
+        adjList.put(2, List.of(3,4));
+        adjList.put(4,new ArrayList());
+       System.out.println(TopologicalSortDFSMain(adjList));
     }
 
     public static List<Integer> ShortestPaths(Map<Integer, List<Integer>> adjList, Integer source) {
@@ -58,7 +65,7 @@ public class MainGraphs {
         Collections.fill(distances, MAX_VALUE);
         distances.set(source, 0);
         List<Boolean> visited = Arrays.asList(new Boolean[adjList.size()]);
-        Collections.fill(visited, Boolean.FALSE);
+        Collections.fill(visited, FALSE);
         Queue<Integer> queue = new LinkedList<>();
         queue.add(source);
         while (!queue.isEmpty()) {
@@ -88,7 +95,7 @@ public class MainGraphs {
 
     public static boolean CycleUndirectedGraph(Map<Integer, List<Integer>> adjList) {
         List<Boolean> visited = Arrays.asList(new Boolean[adjList.size()]);
-        Collections.fill(visited, Boolean.FALSE);
+        Collections.fill(visited, FALSE);
         for (Integer elem : adjList.keySet()) {
             if (!visited.get(elem) && DFS_cycle(elem, adjList, visited, -1)) {
                 return true;
@@ -113,9 +120,9 @@ public class MainGraphs {
 
     public static boolean DFSCycleDirectedGraph(Map<Integer, List<Integer>> adjList) {
         List<Boolean> visited = Arrays.asList(new Boolean[adjList.size()]);
-        Collections.fill(visited, Boolean.FALSE);
+        Collections.fill(visited, FALSE);
         List<Boolean> recStack = Arrays.asList(new Boolean[adjList.size()]);
-        Collections.fill(recStack, Boolean.FALSE);
+        Collections.fill(recStack, FALSE);
         for (Integer vertex : adjList.keySet()) {
             if (!visited.get(vertex)) {
                 if (CycleDirectedGraph(adjList, vertex, visited, recStack)) {
@@ -147,7 +154,7 @@ public class MainGraphs {
 
     public static boolean BFSCycleDirectedGraph(Map<Integer, List<Integer>> adjList) {
         List<Boolean> visited = Arrays.asList(new Boolean[adjList.size()]);
-        Collections.fill(visited, Boolean.FALSE);
+        Collections.fill(visited, FALSE);
         for (Integer node : adjList.keySet()) {
             if (!visited.get(node)) {
                 List<Integer> seen = new ArrayList<>();
@@ -196,5 +203,57 @@ public class MainGraphs {
             }
         }
         return result;
+    }
+
+    public static boolean CycleDetectionBFSKahnAlgorithm(Map<Integer, List<Integer>> adjList) {
+        List<Integer> indegree = Arrays.asList(new Integer[adjList.keySet().size()]);
+        Collections.fill(indegree, 0);
+        for (Integer entry : adjList.keySet()) {
+            adjList.entrySet().forEach(elem -> {
+                if (elem.getValue().contains(entry)) {
+                    indegree.set(entry, indegree.get(entry) + 1);
+                }
+            });
+        }
+        Queue<Integer> q = new LinkedList();
+        int count = 0;
+        while (!q.isEmpty()) {
+            Integer u = q.poll();
+            for (Integer neighbor : adjList.get(u)) {
+                indegree.set(neighbor, indegree.get(neighbor) - 1);
+                if (indegree.get(neighbor).equals(0)) {
+                    q.add(neighbor);
+                }
+            }
+            count++;
+        }
+        return count != adjList.keySet().size();
+    }
+
+    public static void DFSTopologicalSort(Map<Integer, List<Integer>> adjList, Integer node, List<Boolean> visited, Stack<Integer> stack) {
+        visited.set(node, true);
+        for (Integer neighbor : adjList.get(node)) {
+            if (!visited.get(neighbor)) {
+                DFSTopologicalSort(adjList, neighbor, visited, stack);
+            }
+        }
+        stack.add(node);
+        return;
+    }
+
+    public static List<Integer> TopologicalSortDFSMain(Map<Integer, List<Integer>> adjList) {
+        List<Boolean> visited = Arrays.asList(new Boolean[adjList.size()]);
+        Collections.fill(visited, FALSE);
+        Stack<Integer> stack = new Stack();
+        for (Integer vertex : adjList.keySet()) {
+            if (!visited.get(vertex)) {
+                DFSTopologicalSort(adjList, vertex, visited, stack);
+            }
+        }
+        List<Integer> res = new ArrayList();
+        while(!stack.isEmpty()){
+            res.add(stack.pop());
+        }
+        return res;
     }
 }
