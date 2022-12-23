@@ -4,6 +4,7 @@ import java.util.*;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Integer.MAX_VALUE;
+import static java.lang.Integer.MIN_VALUE;
 
 public class MainGraphs {
 
@@ -43,6 +44,7 @@ public class MainGraphs {
 //        adjList.put(3, List.of(1, 2));
 //        adjList.put(4, List.of(2, 5));
 //        adjList.put(5, List.of(4));
+//        System.out.println(BFSCycleDetectionUndirected(adjList));
 //        System.out.println(CycleUndirectedGraph(adjList));
 //        adjList.put(0, List.of(1));
 //        adjList.put(1, new ArrayList<Integer>());
@@ -52,12 +54,26 @@ public class MainGraphs {
 //        adjList.put(5, List.of(3));
 //        System.out.println(DFSCycleDirectedGraph(adjList));
 //        System.out.println(BFSCycleDirectedGraph(adjList));
-        adjList.put(0, List.of(1));
-        adjList.put(1, List.of(3));
-        adjList.put(3, List.of(4));
-        adjList.put(2, List.of(3,4));
-        adjList.put(4,new ArrayList());
-       System.out.println(TopologicalSortDFSMain(adjList));
+//        adjList.put(0, List.of(1));
+//        adjList.put(1, List.of(3));
+//        adjList.put(3, List.of(4));
+//        adjList.put(2, List.of(3, 4));
+//        adjList.put(4, new ArrayList());
+//        System.out.println(TopologicalSortDFSMain(adjList));
+        Map<List<String>, Integer> Edges = new HashMap();
+//        Edges.put(Arrays.asList("a", "b"), -5);
+//        Edges.put(Arrays.asList("a", "c"), 6);
+//        Edges.put(Arrays.asList("b", "c"), -4);
+//        Edges.put(Arrays.asList("c", "d"), 3);
+//        Edges.put(Arrays.asList("d", "b"), -1);
+//        System.out.println(BellmanFord(Edges, "a"));
+        Edges.put(Arrays.asList("a", "b"), 1);
+        Edges.put(Arrays.asList("b", "d"), 2);
+        Edges.put(Arrays.asList("a", "c"), 4);
+        Edges.put(Arrays.asList("b", "c"), -3);
+        Edges.put(Arrays.asList("c", "d"), 3);
+        System.out.println(BellmanFordNoNegativeCycleDetection(Edges,"a"));
+
     }
 
     public static List<Integer> ShortestPaths(Map<Integer, List<Integer>> adjList, Integer source) {
@@ -251,9 +267,115 @@ public class MainGraphs {
             }
         }
         List<Integer> res = new ArrayList();
-        while(!stack.isEmpty()){
+        while (!stack.isEmpty()) {
             res.add(stack.pop());
         }
         return res;
     }
+
+    public static Boolean BFSCycleDetectionUndirected(Map<Integer, List<Integer>> adjList) {
+        Queue<Integer> q = new LinkedList();
+        Map<Integer, Integer> parent = new HashMap();
+        List<Boolean> visited = Arrays.asList(new Boolean[adjList.size()]);
+        Collections.fill(visited, FALSE);
+        Optional<Integer> firstKey = adjList.keySet().stream().findFirst();
+        if (firstKey.isPresent()) {
+            q.add(firstKey.get());
+            parent.put(firstKey.get(), -1);
+            visited.set(firstKey.get(), true);
+        }
+        while (!q.isEmpty()) {
+            Integer vertex = q.poll();
+            for (Integer neighbor : adjList.get(vertex)) {
+                if (!visited.get(neighbor)) {
+                    q.add(neighbor);
+                    visited.set(neighbor, true);
+                    parent.put(neighbor, vertex);
+                } else if (parent.get(vertex) != neighbor) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //Bellman ford theoretical (-ve weight cycle) not a DAG
+
+    public static Map<String, Integer> BellmanFord(Map<List<String>, Integer> Edges, String source) {
+        Map<String, Integer> res = new HashMap();
+        Set<String> vertices = new HashSet();
+        Edges.keySet().forEach(elem -> {
+            vertices.add(elem.get(0));
+            vertices.add(elem.get(1));
+        });
+
+        for (int i = 0; i <= vertices.size(); i++) {
+            res.put("a" + i, 0);
+        }
+        for (String vertex : vertices) {
+            if (!vertex.equals(source)) {
+                res.put(vertex + "0", MAX_VALUE);
+            }
+        }
+
+        for (int i = 1; i <= vertices.size(); i++) {
+            for (List<String> edge : Edges.keySet()) {
+                if (!edge.get(1).equals(source)) {
+                    Integer shortestPathPrevLevel = 0;
+                    if (res.get(edge.get(0) + (i - 1)).equals(MAX_VALUE)) {
+                        shortestPathPrevLevel = Edges.get(edge);
+                    } else {
+                        shortestPathPrevLevel = res.get(edge.get(0) + (i - 1)) + Edges.get(edge);
+                    }
+                    if (res.getOrDefault(edge.get(1) + i, MAX_VALUE) > shortestPathPrevLevel) {
+                        res.put(edge.get(1) + i, shortestPathPrevLevel);
+                    }
+                }
+            }
+        }
+        //|V| no of vertices
+        // if a node distance for at most v edges is lesser than the distance to it using at most v-1 edges
+        // then the node is a witness and set distance(s,v)=-infinity (as part of a negative weight cycle)
+        for (String vertex : vertices) {
+            if (!vertex.equals(source)) {
+                String PathDistAtmostVedges = vertex + vertices.size();
+                String PathDistAtmostVminusOneEdges = vertex + (vertices.size() - 1);
+                if (res.get(PathDistAtmostVedges) < res.get(PathDistAtmostVminusOneEdges)) {
+                    res.put(PathDistAtmostVedges, MIN_VALUE);
+                }
+            }
+        }
+        return res;
+    }
+
+    public static Map<String, Integer> BellmanFordNoNegativeCycleDetection(Map<List<String>, Integer> Edges, String source) {
+        Map<String, Integer> distances = new HashMap();
+        Set<String> vertices = new HashSet();
+        Edges.keySet().forEach(elem -> {
+            vertices.add(elem.get(0));
+            vertices.add(elem.get(1));
+        });
+        for (String vertex : vertices) {
+            if (vertex.equals(source)) {
+                distances.put(source, 0);
+            } else {
+                distances.put(vertex, MAX_VALUE);
+            }
+        }
+        for (int i = 0; i < vertices.size(); i++) {
+            for (List<String> edge : Edges.keySet()) {
+                Integer shortestPathValue = 0;
+                if (distances.get(edge.get(0)).equals(MAX_VALUE)) {
+                    shortestPathValue = Edges.get(edge);
+                } else {
+                    shortestPathValue = distances.get(edge.get(0)) + Edges.get(edge);
+                }
+                if (distances.get(edge.get(1)) > shortestPathValue) {
+                    distances.put(edge.get(1), shortestPathValue);
+                }
+            }
+        }
+        return distances;
+    }
+
 }
