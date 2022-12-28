@@ -393,8 +393,8 @@ public class MainGraphs {
             }
             finalized.set(u, true);
             for (int k = 0; k < adjMatrix.size(); k++) {
-                if (!finalized.get(k) && adjMatrix.get(u).get(k)!=0) {
-                    distances.set(k, Math.min(distances.get(k),distances.get(u) + adjMatrix.get(u).get(k)));
+                if (!finalized.get(k) && adjMatrix.get(u).get(k) != 0) {
+                    distances.set(k, Math.min(distances.get(k), distances.get(u) + adjMatrix.get(u).get(k)));
                 }
             }
         }
@@ -402,4 +402,4 @@ public class MainGraphs {
     }
 }
 
-}
+
