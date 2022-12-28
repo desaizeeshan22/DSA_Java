@@ -72,7 +72,7 @@ public class MainGraphs {
         Edges.put(Arrays.asList("a", "c"), 4);
         Edges.put(Arrays.asList("b", "c"), -3);
         Edges.put(Arrays.asList("c", "d"), 3);
-        System.out.println(BellmanFordNoNegativeCycleDetection(Edges,"a"));
+        System.out.println(BellmanFordNoNegativeCycleDetection(Edges, "a"));
 
     }
 
@@ -377,5 +377,29 @@ public class MainGraphs {
         }
         return distances;
     }
+
+    public static List<Integer> Dijkstra(List<List<Integer>> adjMatrix, int source) {
+        List<Integer> distances = Arrays.asList(new Integer[adjMatrix.size()]);
+        Collections.fill(distances, MAX_VALUE);
+        distances.set(source, 0);
+        List<Boolean> finalized = Arrays.asList(new Boolean[adjMatrix.size()]);
+        Collections.fill(finalized, FALSE);
+        for (int count = 0; count < adjMatrix.size() - 1; count++) {
+            int u = -1;
+            for (int v = 0; v < adjMatrix.size(); v++) {
+                if (!finalized.get(v) && (u == -1 || distances.get(v) < distances.get(u))) {
+                    u = v;
+                }
+            }
+            finalized.set(u, true);
+            for (int k = 0; k < adjMatrix.size(); k++) {
+                if (!finalized.get(k) && adjMatrix.get(u).get(k)!=0) {
+                    distances.set(k, Math.min(distances.get(k),distances.get(u) + adjMatrix.get(u).get(k)));
+                }
+            }
+        }
+        return distances;
+    }
+}
 
 }
