@@ -60,20 +60,23 @@ public class MainGraphs {
 //        adjList.put(2, List.of(3, 4));
 //        adjList.put(4, new ArrayList());
 //        System.out.println(TopologicalSortDFSMain(adjList));
-        Map<List<String>, Integer> Edges = new HashMap();
+//        Map<List<String>, Integer> Edges = new HashMap();
 //        Edges.put(Arrays.asList("a", "b"), -5);
 //        Edges.put(Arrays.asList("a", "c"), 6);
 //        Edges.put(Arrays.asList("b", "c"), -4);
 //        Edges.put(Arrays.asList("c", "d"), 3);
 //        Edges.put(Arrays.asList("d", "b"), -1);
 //        System.out.println(BellmanFord(Edges, "a"));
-        Edges.put(Arrays.asList("a", "b"), 1);
-        Edges.put(Arrays.asList("b", "d"), 2);
-        Edges.put(Arrays.asList("a", "c"), 4);
-        Edges.put(Arrays.asList("b", "c"), -3);
-        Edges.put(Arrays.asList("c", "d"), 3);
-        System.out.println(BellmanFordNoNegativeCycleDetection(Edges, "a"));
+//        Edges.put(Arrays.asList("a", "b"), 1);
+//        Edges.put(Arrays.asList("b", "d"), 2);
+//        Edges.put(Arrays.asList("a", "c"), 4);
+//        Edges.put(Arrays.asList("b", "c"), -3);
+//        Edges.put(Arrays.asList("c", "d"), 3);
+//        System.out.println(BellmanFordNoNegativeCycleDetection(Edges, "a"));
 
+        //Prims test
+        int[][] connections = new int[][]{new int[]{1, 2, 1}, new int[]{1, 3, 2}, new int[]{1, 4, 3}, new int[]{3, 4, 4}};
+        System.out.println(minCostPrim(connections,4));
     }
 
     public static List<Integer> ShortestPaths(Map<Integer, List<Integer>> adjList, Integer source) {
@@ -400,6 +403,41 @@ public class MainGraphs {
         }
         return distances;
     }
+
+    //Prims algorithm
+    //Given a list of edges and their weights
+    //Find MST (minimum cost to connect all nodes)
+    //INput array of connections with each connection =[v1,v2,cost]
+    //v1-source vertex v2 -dest vertex , cost =weight
+    public static int minCostPrim(int[][] connections, int n) {
+        Map<Integer, List<int[]>> graph = new HashMap();
+        for (int[] conn : connections) {
+            int n1 = conn[0], n2 = conn[1], cost = conn[2];
+
+            graph.computeIfAbsent(n1, (elem) -> new ArrayList());
+            graph.computeIfAbsent(n2, (elem) -> new ArrayList());
+            graph.get(n1).add(new int[]{n2, cost});
+            graph.get(n2).add(new int[]{n1, cost});
+        }
+        int totalCost = 0;
+        PriorityQueue<int[]> smallestEdgeQueue = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+        smallestEdgeQueue.add(new int[]{1, 1, 0});
+        Set<Integer> seen = new HashSet();
+        while (!smallestEdgeQueue.isEmpty()) {
+            int[] elem = smallestEdgeQueue.poll();
+            int src = elem[0], dest = elem[1], cost = elem[2];
+            if (!seen.contains(dest)) {
+                totalCost += cost;
+                seen.add(dest);
+                for (int[] next : graph.get(dest)) {
+                    smallestEdgeQueue.add(new int[]{dest, next[0], next[1]});
+                }
+            }
+        }
+        return seen.size() == n ? totalCost : -1;
+    }
+
 }
+
 
 
