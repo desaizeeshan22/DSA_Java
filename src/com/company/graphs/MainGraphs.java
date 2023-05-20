@@ -76,7 +76,8 @@ public class MainGraphs {
 
         //Prims test
         int[][] connections = new int[][]{new int[]{1, 2, 1}, new int[]{1, 3, 2}, new int[]{1, 4, 3}, new int[]{3, 4, 4}};
-        System.out.println(minCostPrim(connections,4));
+//        System.out.println(minCostPrim(connections, 4));
+        System.out.println(KruskalMST(connections, 4));
     }
 
     public static List<Integer> ShortestPaths(Map<Integer, List<Integer>> adjList, Integer source) {
@@ -411,6 +412,7 @@ public class MainGraphs {
     //v1-source vertex v2 -dest vertex , cost =weight
     public static int minCostPrim(int[][] connections, int n) {
         Map<Integer, List<int[]>> graph = new HashMap();
+//        Construct an adj list with key as node : val as [adjNode,edge weight]
         for (int[] conn : connections) {
             int n1 = conn[0], n2 = conn[1], cost = conn[2];
 
@@ -420,12 +422,16 @@ public class MainGraphs {
             graph.get(n2).add(new int[]{n1, cost});
         }
         int totalCost = 0;
+        //priority queue aka min heap with the closest edge at the beginning
         PriorityQueue<int[]> smallestEdgeQueue = new PriorityQueue<>((a, b) -> a[2] - b[2]);
         smallestEdgeQueue.add(new int[]{1, 1, 0});
+//        Track already visited vertices to prevent redundant weight additions
         Set<Integer> seen = new HashSet();
         while (!smallestEdgeQueue.isEmpty()) {
+            // the smallest edge from vertex is processed first
             int[] elem = smallestEdgeQueue.poll();
             int src = elem[0], dest = elem[1], cost = elem[2];
+//            If the dest node is not visited visit it ,add it to seen and add edge cost to total cost
             if (!seen.contains(dest)) {
                 totalCost += cost;
                 seen.add(dest);
@@ -437,6 +443,34 @@ public class MainGraphs {
         return seen.size() == n ? totalCost : -1;
     }
 
+    //    Kruskal's Alogrithm
+//    Sort all the edges by weight
+//    Take the edge with the minimum weight in order
+//    Add the edge and the weigh to mstTotal Weight
+//    Ensure edge addition wont cause a cycle
+//    A disjoint set DS is used to add edge
+//    if the number of edges reach num of vertices -1
+//    All components are connected and the tree is a MST
+    public static int KruskalMST(int[][] connections, int N) {
+        Arrays.sort(connections, (a, b) -> a[2] - b[2]);
+//        All nodes are parents of themselves(intialize disjoint set)
+        DisjointSet disjointSet = new DisjointSet(N);
+        int numEdges = 0;
+        int minCost = 0;
+        for (int[] conn : connections) {
+            int a = conn[0], b = conn[1], cost = conn[2];
+            if (disjointSet.isSameGroup(a, b)) {
+//                (if the nodes on the edge have the same root or topmost parent it leads to a cycle so skip the edge)
+                continue;
+            }
+//            Add the edge in the MST and make the root of A as parent of root of B
+            //nodes a and b belong to the same set
+            disjointSet.Union(a, b);
+            numEdges++;
+            minCost += cost;
+        }
+        return numEdges == N - 1 ? minCost : -1;
+    }
 }
 
 
