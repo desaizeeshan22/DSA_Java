@@ -75,9 +75,15 @@ public class MainGraphs {
 //        System.out.println(BellmanFordNoNegativeCycleDetection(Edges, "a"));
 
         //Prims test
-        int[][] connections = new int[][]{new int[]{1, 2, 1}, new int[]{1, 3, 2}, new int[]{1, 4, 3}, new int[]{3, 4, 4}};
+//        int[][] connections = new int[][]{new int[]{1, 2, 1}, new int[]{1, 3, 2}, new int[]{1, 4, 3}, new int[]{3, 4, 4}};
 //        System.out.println(minCostPrim(connections, 4));
-        System.out.println(KruskalMST(connections, 4));
+////        System.out.println(KruskalMST(connections, 4));
+//        int[] arr = new int[]{15, 10, 12, 14, 11};
+//        int n = 5;
+//        insertion_sort(arr, n);
+//        for (int elem : arr) {
+//            System.out.println(elem);
+//        }
     }
 
     public static List<Integer> ShortestPaths(Map<Integer, List<Integer>> adjList, Integer source) {
