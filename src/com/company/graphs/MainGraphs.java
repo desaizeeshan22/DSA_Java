@@ -84,6 +84,10 @@ public class MainGraphs {
 //        for (int elem : arr) {
 //            System.out.println(elem);
 //        }
+//        int res = numWays(5, new HashMap<>());
+//        int res = nSum(3, new HashMap<>());
+        int res = numWaysBottomUp(4);
+        System.out.println(res);
     }
 
     public static List<Integer> ShortestPaths(Map<Integer, List<Integer>> adjList, Integer source) {
@@ -476,6 +480,64 @@ public class MainGraphs {
             minCost += cost;
         }
         return numEdges == N - 1 ? minCost : -1;
+    }
+
+    //    Number of ways to climb stairs of size n
+//    constraints: can take 1 or two steps at a time
+    public static int numWays(int size, Map<Integer, Integer> cache) {
+        if (cache.containsKey(size)) {
+            return cache.get(size);
+        }
+        if (size == 0) {
+            return 1;
+        }
+        if (size < 0) {
+            return 0;
+        }
+        int res = numWays(size - 1, cache) + numWays(size - 2, cache);
+        cache.put(size, res);
+        return res;
+    }
+
+    public static int numWaysBottomUp(int n) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, 0);
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+
+    //    Number of ways to climb stairs of size n
+//    constraints: can take 1 to k steps at a time
+    public int numWaysKsteps(int n, int k) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, 0);
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= k; j++) {
+                if (i >= j) {
+                    dp[i] += dp[i - j];
+                }
+            }
+        }
+        return dp[n];
+    }
+
+    //    Sum of n natural numbers
+//    recursive
+    public static int nSum(int n, Map<Integer, Integer> cache) {
+        if (cache.containsKey(n)) {
+            return n;
+        }
+        if (n == 1) {
+            return 1;
+        }
+        cache.put(n, nSum(n - 1, cache) + n);
+        return cache.get(n);
     }
 }
 
