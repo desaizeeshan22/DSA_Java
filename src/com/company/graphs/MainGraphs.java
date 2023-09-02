@@ -86,7 +86,8 @@ public class MainGraphs {
 //        }
 //        int res = numWays(5, new HashMap<>());
 //        int res = nSum(3, new HashMap<>());
-        int res = numWaysBottomUp(4);
+//        int res = numWaysBottomUp(4);
+        int res = minCostStairs(8, 2, new int[]{0, 3, 2, 4, 6, 1, 1, 5, 3});
         System.out.println(res);
     }
 
@@ -523,6 +524,25 @@ public class MainGraphs {
                     dp[i] += dp[i - j];
                 }
             }
+        }
+        return dp[n];
+    }
+
+    //Minimize total cost of climbing stairs , given :
+//    int n- number of stairs
+//    int[]cost- cost at a particular index from 1 to n
+//    k maximum number of steps which can be taken at a time
+    public static int minCostStairs(int n, int k, int[] costs) {
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            int temp = MAX_VALUE;
+            for (int j = 1; j <= k; j++) {
+                if (i >= j) {
+                    temp = Math.min(temp, dp[i - j]);
+                }
+            }
+            dp[i] = costs[i] + temp;
         }
         return dp[n];
     }
